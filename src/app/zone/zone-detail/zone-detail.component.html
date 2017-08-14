@@ -1,0 +1,166 @@
+<div class="main-app zone-detail-wrapper" *ngIf="bIsPageLoading">
+	<div class="row logo-topbar-area no-margin" #logoArea>
+		<div class="col-xs-12 no-padding">
+			<component-logo-area
+			[title]="'Zone Detail'"
+			></component-logo-area>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header clearfix ">
+			<h3 class="card-title">
+				Zone Detail
+			</h3>
+		</div>
+
+		<div class="display-wrapper card-body"><!--display wrapper-->
+			<div class="display-area">
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+						<tr class="black-muted-bg">
+							<th>Title</th>
+							<th>Value</th>
+							<th *ngIf="bIsEditable">Action</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr><!-- name -->
+							<td>Name</td>
+							<td>
+								<div *ngIf="status!==1">
+									{{currentZone.name}}
+								</div>
+
+								<div *ngIf="status===1">
+									<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+									<div *ngIf="error" class="alert alert-danger">
+										{{error}}
+									</div>	
+								</div>
+							</td>
+
+							<td *ngIf="bIsEditable">
+								<button class="btn btn-success" (click)="editValue(1, currentZone.name)" *ngIf="status!==1">
+									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+								</button>
+
+								<button class="btn btn-primary" (click)="update()" *ngIf="status===1">
+									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+								</button>
+
+								<button class="btn btn-default" (click)="cancel()" *ngIf="status===1">
+									<i class="fa fa-times" aria-hidden="true"></i>
+								</button>
+							</td>
+						</tr><!-- name -->
+
+						<tr><!-- description -->
+							<td>Description</td>
+							<td>
+								<div *ngIf="status!==2">
+									{{currentZone.description}}
+								</div>
+
+								<div *ngIf="status===2">
+									<textarea class="form-control" [(ngModel)]="paramValue"></textarea>
+									<div *ngIf="error" class="alert alert-danger">
+										{{error}}
+									</div>	
+								</div>
+							</td>
+							<td *ngIf="bIsEditable">
+								<button class="btn btn-success" (click)="editValue(2, currentZone.description)" *ngIf="status!==2">
+									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+								</button>
+
+								<button class="btn btn-primary" (click)="update()" *ngIf="status===2">
+									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+								</button>
+
+								<button class="btn btn-default" (click)="cancel()" *ngIf="status===2">
+									<i class="fa fa-times" aria-hidden="true"></i>
+								</button>
+							</td>
+						</tr><!-- description -->
+
+						<tr><!-- color -->
+							<td>Color</td>
+
+							<td>
+								<div class="color-area" [style.background]="currentZone.color" *ngIf="status!==3"></div>
+								<div *ngIf="status===3">
+									<input [(colorPicker)]="paramValue" [style.background]="paramValue" [cpOutputFormat]="'hex'" [cpPosition]="'bottom'" class="form-control color-area" [(ngModel)]="paramValue" />
+								</div>
+							</td>
+
+							<td *ngIf="bIsEditable">
+								<button class="btn btn-success" (click)="editValue(3, currentZone.color)" *ngIf="status!==3">
+									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+								</button>
+
+								<button class="btn btn-primary" (click)="update()" *ngIf="status===3">
+									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+								</button>
+
+								<button class="btn btn-default" (click)="cancel()" *ngIf="status===3">
+									<i class="fa fa-times" aria-hidden="true"></i>
+								</button>
+							</td>
+						</tr><!-- color -->
+
+						<tr><!-- criticality -->
+							<td>Criticality</td>
+
+							<td>
+								<div *ngIf="status!==4" class="capitalize">
+									{{currentZone.criticality}}
+								</div>
+								<div *ngIf="status===4">
+									<select class="form-control capitalize"[(ngModel)]="paramValue" required>
+										<option *ngFor="let type of CRITICALITIES" [value]="type" class="capitalize">{{type}}</option>
+									</select>
+								</div>
+							</td>
+
+							<td *ngIf="bIsEditable">
+								<button class="btn btn-success" (click)="editValue(4, currentZone.criticality)" *ngIf="status!==4">
+									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+								</button>
+
+								<button class="btn btn-primary" (click)="update()" *ngIf="status===4">
+									<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+								</button>
+
+								<button class="btn btn-default" (click)="cancel()" *ngIf="status===4">
+									<i class="fa fa-times" aria-hidden="true"></i>
+								</button>
+							</td>
+						</tr><!-- criticality -->
+
+						<tr><!-- counter of sensors -->
+							<td>No of sensors</td>
+
+							<td>
+								{{sensorCounter}}
+							</td>
+							<td *ngIf="bIsEditable"></td>
+						</tr><!-- counter of sensors -->
+
+						<tr><!-- sensor types -->
+							<td>Sensor Types</td>
+
+							<td>
+								<select class="form-control" *ngIf="bIsTypeLoading">
+									<option *ngFor="let type of sensorTypes" [value]="type">{{type}}</option>
+								</select>
+							</td>
+							<td *ngIf="bIsEditable"></td>
+						</tr><!-- counter of sensors -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

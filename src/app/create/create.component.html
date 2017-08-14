@@ -1,0 +1,30 @@
+<div class="main-app create-wrapper">
+	<div class="create-header-wrapper relative">
+		<div class="row no-margin">
+			<div class="col-xs-12 no-padding">
+				<h1 class="text-center title">{{title}} Setup</h1>
+			</div>
+		</div>
+	</div>
+
+	<div class="create-section">
+		<div class="create-customer-section" *ngIf="createType===0">
+			<component-create-customer></component-create-customer>
+		</div>
+
+		<div class="create-zone-section" *ngIf="createType===1">
+			<component-create-zone
+			[createName]="createName"
+			[customerId]="customerId"
+			></component-create-zone>
+		</div>
+
+		<div class="create-sensor-section" *ngIf="createType===2">
+			<component-create-sensor
+			[createName]="createName"
+			[customerId]="customerId"
+			[zoneId]="zoneId"
+			></component-create-sensor>
+		</div>
+	</div>
+</div>

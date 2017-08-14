@@ -1,0 +1,50 @@
+@import 'src/pre-built-theme.scss';
+
+\:host {
+  width: 100%;
+}
+
+md-toolbar {
+  background-color: transparent !important;
+
+  .button-area {
+    button {
+      color: #fff;
+      width: 100px;
+    }
+  }
+
+  .logo-area {
+    height: 100%;
+    padding: 10px 0;
+  }
+}
+  
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+.top-bar-area {
+  button {
+    height: 32px;
+    margin-top: 4px;
+  }
+}
+
+.menu-button {
+  min-width: 50px;
+  padding: 0;
+}
+
+button.mat-menu-item {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+
+  md-icon {
+    margin-right: 5px;
+    width: 20px;
+    color: mat-color($app-primary) !important;
+    font-size:24px;
+  }
+}

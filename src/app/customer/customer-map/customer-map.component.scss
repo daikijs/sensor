@@ -1,0 +1,12 @@
+.customer-map-wrap {
+  border: 2px dotted #1d1d1d;
+  height: 100%;
+
+  sebm-google-map {
+    height: 100%;
+  }
+
+  .sebm-google-map-container-inner {
+    height: 100%;
+  }
+}

@@ -1,0 +1,168 @@
+<div class="zone-list-wrap full-height">
+	<div class="row no-margin full-height">
+
+		<div class="col-sm-3 data-list full-height">
+			<div class="data-list-container full-height">
+				<div class="row no-margin">
+					<h3>
+						<strong class="title">Zones</strong>
+					</h3>
+				</div>
+
+				<div class="list-wrapper">
+					<div class="row no-margin list-item" *ngFor="let zone of zones;let i = index;" (click)="selectZone(i)" [ngClass]="{'active': i===selectedZoneId}">
+						<div class="col-xs-2 no-padding group">
+							<div class="col-xs-12" *ngIf="i!==selectedZoneId">
+								<i class="fa fa-plus" aria-hidden="true"></i>
+							</div>
+							<div class="col-xs-12" *ngIf="i===selectedZoneId">
+								<i class="fa fa-minus" aria-hidden="true"></i>
+							</div>
+						</div>
+						<div class="col-xs-5 no-padding group">
+							<div class="col-xs-12 no-padding">
+								<a routerLink="/zone_detail/{{zone.$key}}" class="pull-left" *ngIf="bIsZoneEditatble">
+									{{zone.name}}
+								</a>
+
+								<a class="pull-left" *ngIf="!bIsZoneEditatble">
+									{{zone.name}}
+								</a>
+							</div>
+						</div>
+						<div class="col-xs-4 no-padding">
+							<div class="col-xs-12 no-padding">
+								<div class="counter-wrapper" [ngClass]="{'off': zone.offTotal | countColorPipe}">
+									{{[zone.offTotal, zone.total] | remainder}}/{{zone.total}}
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-1 no-padding" *ngIf="bIsZoneEditatble">
+							<div class="delete-item">
+								<i class="fa fa-trash-o" aria-hidden="true" (click)="deleteZone(zone.$key)"></i>	
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row create-section" *ngIf="bIsZoneEditatble">
+					<div class="col-xs-12 no-padding">
+						<button md-fab color="primary" class="pull-right" (click)="createZone()">+</button>
+					</div>
+				</div>
+
+				<md-card class="customer-detail-area" *ngIf="bIsSelectedZone">
+					<md-card-content>
+						<ul>
+							<li>
+								<div class="heading-widget">
+									<h4>Name:</h4>
+								</div>
+								<div>{{selectedZone.name}}</div>
+							</li>
+							<li>
+								<div class="heading-widget">
+									<h4>Description:</h4>
+								</div>
+								<div>{{selectedZone.description}}</div>
+							</li>
+						</ul>
+					</md-card-content>
+				</md-card>
+			</div>
+		</div>
+
+		<div class="col-sm-3 data-list full-height">
+			<div class="data-list-container full-height">
+				<div class="row no-margin">
+					<h3>
+						<strong class="title">Sensors</strong>
+					</h3>
+				</div>
+
+				<div class="list-wrapper" *ngIf="bIsSelectedZone">
+					<div class="row no-margin list-item" *ngFor="let sensor of sensors;let i = index;" (click)="selectSensor(i)" [ngClass]="{'active': i===selectedSensorId}">
+						<div class="col-xs-2 no-padding group">
+							<div class="col-xs-12" *ngIf="i!==selectedSensorId">
+								<i class="fa fa-plus" aria-hidden="true"></i>
+							</div>
+							<div class="col-xs-12" *ngIf="i===selectedSensorId">
+								<i class="fa fa-minus" aria-hidden="true"></i>
+							</div>
+						</div>
+						<div class="col-xs-5 no-padding group">
+							<div class="col-xs-12 no-padding">
+								<a [routerLink]="['/sensor', sensor.$key]" [queryParams]="{type: 'edit'}" class="pull-left" *ngIf="bIsSensorEditable">
+									{{sensor.name}}
+								</a>
+
+								<a class="pull-left" *ngIf="!bIsSensorEditable">
+									{{sensor.name}}
+								</a>
+							</div>
+						</div>
+						<div class="col-xs-4 no-padding">
+							<div class="col-xs-12 no-padding">
+								<div class="counter-wrapper sensor-icon" [ngClass]="{'off': sensor.availability === 'off'}">
+									
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-1 no-padding" *ngIf="bIsSensorEditable">
+							<div class="delete-item">
+								<i class="fa fa-trash-o" aria-hidden="true" (click)="deleteSensor(sensor.$key)"></i>	
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row create-section" *ngIf="bIsSelectedZone && bIsSensorEditable">
+					<div class="col-xs-12 no-padding">
+						<button md-fab color="primary" class="pull-right" (click)="createSensor()">+</button>
+					</div>
+				</div>
+
+				<md-card class="customer-detail-area" *ngIf="bIsSelectedSensor">
+					<md-card-content>
+						<ul>
+							<li>
+								<div class="heading-widget">
+									<h4>Name:</h4>
+								</div>
+								<div>
+									{{selectedSensor.name}}
+								</div>
+							</li>
+							<li>
+								<div class="heading-widget">
+									<h4>Description:</h4>
+								</div>
+								<div>
+									{{selectedSensor.description}}
+								</div>
+							</li>
+						</ul>
+					</md-card-content>
+				</md-card>
+			</div>
+		</div>
+
+		<div class="col-sm-6 data-list full-height">
+			<div class="data-list-container full-height">
+				<div class="row no-margin">
+					<h3>
+						<strong class="title">Sensor Data</strong>
+					</h3>
+				</div>
+				<div class="row no-margin" *ngIf="bIsSelectedSensor">
+					<component-sensor-detail
+					[windowH] = "windowH"
+					[selectedSensor] = "selectedSensor"
+					[sensorKey]="sensorKey"
+					></component-sensor-detail>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

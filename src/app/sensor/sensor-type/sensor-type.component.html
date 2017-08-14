@@ -1,0 +1,17 @@
+<div class="main-app senosor-type-area full-height" #sensorTMAScreen>
+	<div class="row sensor-topbar-area no-margin" #sensorTypeTopBarScreen>
+		<div class="col-xs-12 no-padding">
+			<component-sensor-type-topbar
+			></component-sensor-type-topbar>
+		</div>
+	</div>
+
+	<div class="row sensor-main-area no-margin" [style.height.px]="nMAHeight">
+		<div class="row sensor-map-area no-margin full-height">
+			<div class="col-xs-12 no-padding full-height">
+				<component-sensor-type-detail
+				></component-sensor-type-detail>
+			</div>
+		</div>
+	</div>
+</div>

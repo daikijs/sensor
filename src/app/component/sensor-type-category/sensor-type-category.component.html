@@ -1,0 +1,191 @@
+<div class="st-category-wrapper">
+	<div class="table-type-form" *ngIf="isSelectType && isCreatable">
+		<h3>Please select the table type</h3>
+		<div class="table-type">
+			<div class="form-check">
+    			<label class="form-check-label">
+    				<div class="text-center">Table Type1</div>
+        			<input class="form-check-input" type="radio" [(ngModel)]="tableType" name="gridRadios" [value]="TABLE_TYPE[1]" checked>
+        			<img src="https://firebasestorage.googleapis.com/v0/b/omniscent-2889e.appspot.com/o/assets%2Fsensor_type_temp1.png?alt=media&token=f48f0a11-0b91-4631-ab7b-8d5c523d5a79">
+    			</label>
+    		</div>
+
+    		<div class="form-check">
+    			<label class="form-check-label">
+    				<div class="text-center">Table Type2</div>
+        			<input class="form-check-input" type="radio" [(ngModel)]="tableType" name="gridRadios" [value]="TABLE_TYPE[0]">
+        			<img src="https://firebasestorage.googleapis.com/v0/b/omniscent-2889e.appspot.com/o/assets%2Fsensor_type_temp2.png?alt=media&token=82a8cf6d-bc0f-40b8-a505-b939ef69d4e3">
+    			</label>
+    		</div>
+		</div>
+		<div class="action-area">
+			<button md-raised-button width="100" class="btn btn-primary" (click)="updateTableType()">OK</button>
+		</div>
+	</div>
+
+	<div class="params-form" *ngIf="!isSelectType">
+		<div class="row no-margin">
+			<div class="col-sm-6"><!--displaying params-->
+				<div class="header-row-type" *ngIf="isHeaderRowType"><!-- header-row area -->
+					<div class="header-fields">
+						<div class="heading-widget">
+							<h3>Headers</h3>
+						</div>
+
+						<div class="body">
+							<div class="list-group">
+								<a class="row no-margin click list-group-item list-group-item-action" *ngFor="let row of sensorType.heads;let i = index;" (click)="selectHeadSensorType(i)" [ngClass]="{active: nSelectedHeadParamId === i}">
+									<div class="col-xs-12 no-padding">
+										<div class="pull-left">
+											<div class="title inline">{{row.name}}<span class="success-color" *ngIf="row.primaryKey">(primary key)</span></div>
+										</div>
+										<div class="pull-right" *ngIf="isCreatable">
+											<div class="edit">
+												<i class="fa fa-pencil click text-success" aria-hidden="true" (click)="editHeaderParams(i)"></i>
+												<i class="fa fa-trash-o click text-danger left-5" aria-hidden="true" (click)="deleteHeaderParams(i)"></i>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+
+							<div class="action-area" *ngIf="isCreatable">
+								<button md-fab color="primary" (click)="showHeaderParam()">+</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="row-fields">
+						<div class="heading-widget">
+							<h3>Row Names</h3>
+						</div>
+
+						<div class="body">
+							<div class="list-group">
+								<a class="row no-margin click list-group-item list-group-item-action" *ngFor="let row of sensorType.rows;let i = index;" (click)="selectRowSensorType(i)" [ngClass]="{active: nSelectedRowParamId === i}">
+									<div class="col-xs-12 no-padding">
+										<div class="pull-left">
+											<div class="title inline">{{row.name}}:</div>
+											<div class="content inline" [ngClass]="{capitalize: row.valueType !== PARAM_TYPE[0]}">{{row.detail}}</div>
+										</div>
+										<div class="pull-right" *ngIf="isCreatable">
+											<div class="edit">
+												<i class="fa fa-pencil click text-success" aria-hidden="true" (click)="editRowParams(i)"></i>
+												<i class="fa fa-trash-o click text-danger left-5" aria-hidden="true" (click)="deleteRowParams(i)"></i>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+							<div class="action-area" *ngIf="isCreatable">
+								<button md-fab color="primary" (click)="showRowParam()">+</button>
+							</div>
+						</div>
+					</div>
+				</div><!-- header-row area -->
+
+				<div class="header-type" *ngIf="!isHeaderRowType"><!-- header area -->
+					<div class="header-fields">
+						<div class="heading-widget">
+							<h3>Headers</h3>
+						</div>
+
+						<div class="body">
+							<div class="list-group">
+								<a class="row no-margin click list-group-item list-group-item-action" *ngFor="let row of sensorType.heads;let i = index;" (click)="selectHeadSensorType(i)" [ngClass]="{active: nSelectedHeadParamId === i}">
+									<div class="col-xs-12 no-padding">
+										<div class="pull-left">
+											<div class="title inline">{{row.name}}<span class="success-color" *ngIf="row.primaryKey">(primary key)</span></div>
+										</div>
+										<div class="pull-right" *ngIf="isCreatable">
+											<div class="edit">
+												<i class="fa fa-pencil click text-success" aria-hidden="true" (click)="editHeaderParams(i)"></i>
+												<i class="fa fa-trash-o click text-danger left-5" aria-hidden="true" (click)="deleteHeaderParams(i)"></i>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+
+							<div class="action-area" *ngIf="isCreatable">
+								<button md-fab color="primary" (click)="showHeaderParam()">+</button>
+							</div>
+						</div>
+					</div>
+				</div><!-- header area -->
+
+				<div class="list-group sensor-type-link"><!--go to the sensor type page-->
+					<a class="click list-group-item list-group-item-action" (click)="gotoSensorInfo()">Sensor Type Name: {{sensorTypeName}}</a>
+				</div>
+			</div><!--displaying params-->
+
+			<div class="form-area col-sm-6" [ngClass]="{'full-width': isCreateStatus}" *ngIf="isCreatable"><!--form area-->
+				<div class="create-param-form" *ngIf="isCreateNewHeader" [ngClass]="{'col-sm-6 no-padding': isCreateStatus}">
+					<form [formGroup]="headerForm" (ngSubmit)="submitHeaderParam()">
+						<h3 *ngIf="isCreateStatus">Create Header Param Form</h3>
+						<h3 *ngIf="!isCreateStatus">Update Header Param Form</h3>
+
+						<div class="form-group">
+							<md-input-container class="full-width">
+						    	<input type="text" mdInput placeholder="Param Name" formControlName="name" name="name" required>
+						    </md-input-container>
+							<div *ngIf="formErrors.name" class="alert alert-danger">
+								{{formErrors.name}}
+							</div>
+						</div>
+
+						<div class="row margin-1-em">
+							<div class="col-xs-12">
+								<button md-raised-button class="btn btn-success" *ngIf="isCreateStatus">Create</button>
+								<button md-raised-button class="btn btn-success" *ngIf="!isCreateStatus">Update</button>
+								<a class="btn btn-default" (click)="closeHeaderForm()">Cancel</a>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="create-param-form" *ngIf="isCreateNewRow" [ngClass]="{'col-sm-6 no-padding': isCreateStatus}"><!--create param form for row-->
+					<form [formGroup]="rowForm" (ngSubmit)="submitRowParam()">
+						<h3 *ngIf="isCreateStatus">Create Row Param Form</h3>
+						<h3 *ngIf="!isCreateStatus">Update Row Param Form</h3>
+
+						<div class="form-group">
+							<md-input-container class="full-width">
+						    	<input type="text" mdInput placeholder="Param Name" formControlName="name" name="name" required>
+						    </md-input-container>
+							<div *ngIf="formErrors.name" class="alert alert-danger">
+								{{formErrors.name}}
+							</div>
+						</div>
+
+						<div class="form-group" *ngIf="typeStatus === PARAM_TYPE[0]">
+							<div class="">
+								<md-input-container class="full-width">
+							    	<input type="text" mdInput placeholder="Param Unit" formControlName="unit" name="unit" required>
+							    </md-input-container>
+								<p style="font-size: 12px;">Please input units with "," for distinguish them.</p>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<md-select placeholder="Parameter Type" class="full-width" formControlName="type" name="type" [required]="true" (ngModelChange)="onTypeChange($event)">
+	                            <md-option *ngFor="let type of PARAM_TYPE" [value]="type">
+	                                {{ type }}
+	                            </md-option>
+	                        </md-select>
+						</div>
+
+						<div class="row margin-1-em">
+							<div class="col-xs-12">
+								<button md-raised-button class="btn btn-success" *ngIf="isCreateStatus">Create</button>
+								<button md-raised-button class="btn btn-success" *ngIf="!isCreateStatus">Update</button>
+								<a class="btn btn-default" (click)="closeRowForm()">Cancel</a>
+							</div>
+						</div>
+					</form>
+				</div><!--create param form-->
+			</div><!--form area-->
+		</div>
+		
+	</div>
+</div>

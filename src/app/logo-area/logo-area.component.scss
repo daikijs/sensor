@@ -1,0 +1,41 @@
+.logo-area-wrap {
+  margin: 1em;
+
+  .action-area-wrap {
+  	width: 400px;
+  }
+
+  .title {
+    margin: 0;
+  }
+
+  .action-area {
+  	button {
+  	  width: 150px;
+  	  border: 1px solid #000 !important;
+
+  	  &.active {
+  	  	background: #ccc;
+  	  	border: 2px solid #000 !important;
+  	  }
+  	}
+  }
+
+  .logo {
+  	img {
+  	  position: absolute;
+  	  top: 1em;
+  	  left: 1em;
+  	  width: auto;
+  	  height: 60px;
+  	}
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .logo-area-wrap {
+    .action-area-wrap {
+      width: 320px;
+    }
+  }
+}

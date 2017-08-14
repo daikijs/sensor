@@ -1,0 +1,18 @@
+.sensor-type-info-wrapper {
+	margin-top: 50px;
+}
+
+.sensor-type-info-wrapper .action-wrapper .btn-action {
+	font-size: 15px;
+    background-color: #fff;
+    border: 1px solid #333;
+    margin: 0 auto 20px;
+    display: block;
+}
+
+.sensor-type-info-wrapper .action-wrapper .btn-action.btn-primary {
+	color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+    border: 1px solid #337ab7;
+}

@@ -1,0 +1,30 @@
+.customer-topbar-wrap {
+  margin: 0 1em;
+
+  .title-area {
+    margin: 20px;
+    font-style: italic;
+  }
+
+  .action-area-wrap {
+    width: 400px;
+  }
+
+  .logo {
+    img {
+      position: absolute;
+      top: 1em;
+      left: 1em;
+      width: auto;
+      height: 60px;
+    }
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .customer-topbar-wrap {
+    .action-area-wrap {
+      width: 320px;
+    }
+  }
+}

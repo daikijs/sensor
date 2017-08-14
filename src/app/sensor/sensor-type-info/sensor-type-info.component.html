@@ -1,0 +1,57 @@
+<div class="sensor-type-info-wrapper" *ngIf="isPageLoading">
+	<div class="action-wrapper"><!--action wrapper-->
+		<div class="row no-margin">
+			<div class="col-sm-2 col-sm-offset-1">
+				<button class="btn btn-action" [ngClass]="{'btn-primary': nActionNumber === 0}" (click)="changeStatus(0)">Status</button>
+			</div>
+			<div class="col-sm-2">
+				<button class="btn btn-action" [ngClass]="{'btn-primary': nActionNumber === 1}" (click)="changeStatus(1)">VoC Analytics</button>
+			</div>
+			<div class="col-sm-2">
+				<button class="btn btn-action" [ngClass]="{'btn-primary': nActionNumber === 2}" (click)="changeStatus(2)">VoC Raw</button>
+			</div>
+			<div class="col-sm-2">
+				<button class="btn btn-action" [ngClass]="{'btn-primary': nActionNumber === 3}" (click)="changeStatus(3)">Processed Data</button>
+			</div>
+			<div class="col-sm-2">
+				<button class="btn btn-action" [ngClass]="{'btn-primary': nActionNumber === 4}" (click)="changeStatus(4)" *ngIf="isDebug">Debug</button>
+			</div>
+		</div>
+	</div><!--action wrapper-->
+
+	<div class="display-wrapper container"><!--display wrapper-->
+		<table class="table table-hover table-striped table-bordered" *ngIf="!isRowHeader">
+			<thead>
+				<tr>
+					<th *ngFor="let head of selectedSensorType.heads">
+						{{head.name}}
+					</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				<tr>
+					<th *ngFor="let head of selectedSensorType.heads">
+					</th>
+				</tr>
+			</tbody>
+		</table>
+
+		<table class="table table-hover table-striped table-bordered" *ngIf="isRowHeader">
+			<thead *ngIf="isHeaderShow">
+				<tr>
+					<th *ngFor="let head of selectedSensorType.heads">
+						{{head.name}}
+					</th>
+				</tr>
+			</thead>
+
+			<tbody *ngIf="isRowShow">
+				<tr *ngFor="let row of selectedSensorType.rows">
+					<td>{{row.name}}</td>
+					<td [ngClass]="{capitalize: row.valueType !== PARATYPE[0]}">{{[row.valueType, row.defaultValue] | sensortypeDetail}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div><!--display wrapper-->
+</div>

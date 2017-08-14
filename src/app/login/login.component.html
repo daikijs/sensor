@@ -1,0 +1,54 @@
+<div class="container-fluid sign-form-area">
+	<div class="sign-form-wrapper">
+		<md-card>	
+			<md-card-title>
+				<img md-card-image src="https://firebasestorage.googleapis.com/v0/b/omniscent-2889e.appspot.com/o/logos%2FOmniscentLogo.png?alt=media&token=676e1f64-59a1-40de-8ab9-25efcb6112d2">
+				<h2>Login</h2>
+			</md-card-title>
+			<md-card-content>
+				<form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+					<div class="form-group">
+						<md-input-container class="full-width">
+					    	<input type="email" mdInput placeholder="email" formControlName="email" name="email" required>
+					    </md-input-container>
+					    <div *ngIf="formErrors['email']" class="alert alert-danger">
+							{{formErrors['email']}}
+						</div>
+					</div>
+
+					<div class="form-group">
+					    <md-input-container  class="full-width">
+					    	<input type="password" mdInput placeholder="password" formControlName="password" name="password" required>
+					    </md-input-container>
+
+					    <div *ngIf="formErrors['password']" class="alert alert-danger">
+							{{formErrors['password']}}
+						</div>
+					</div>
+
+					<button md-raised-button class="full-width" color="primary">
+						<strong>Sign In</strong>
+					</button>
+				</form>
+			</md-card-content>
+
+			<md-card-content>
+				<md-checkbox color="primary" class="full-width">
+					<div class="blue-text">
+						Remember Me
+					</div>
+				</md-checkbox>
+			</md-card-content>
+
+			<md-card-actions class="no-margin">
+				<div class="row no-margin">
+					<a routerLink="#" class="pull-left blue-text">
+						Forgot the password?
+					</a>
+
+					<a routerLink="/sign_up" class="pull-right blue-text">Sign up Now</a>
+				</div>
+		    </md-card-actions>
+		</md-card>
+	</div>
+</div><!-- /container -->

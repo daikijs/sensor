@@ -1,0 +1,27 @@
+<div class="row dashboard-area no-margin" *ngIf="isLoading">
+	<md-card class="col-sm-offset-2 col-sm-8 wrapper">
+		<div class="row" *ngIf="isAdmin">
+			<div class="col-sm-12">
+				<button md-button class="btn btn-primary margin-auto" (click)="gotoAdmin()">Admin Page</button>
+			</div>
+		</div>
+
+		<div class="row" *ngIf="userType==='staff' && userRole !== 'developer'">
+			<div class="col-sm-12">
+				<button md-button class="btn btn-success margin-auto" (click)="gotoCustomer()">Customer Page</button>
+			</div>
+		</div>
+
+		<div class="row" *ngIf="userRole !== 'developer'">
+			<div class="col-sm-12">
+				<button md-button class="btn btn-info margin-auto" (click)="gotoZone()">Zone Page</button>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-12">
+				<button md-button class="btn btn-warning margin-auto" (click)="gotoSensorType()">Sensor Type Page</button>
+			</div>
+		</div>
+	</md-card>
+</div>

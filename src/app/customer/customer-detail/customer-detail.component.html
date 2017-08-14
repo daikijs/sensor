@@ -1,0 +1,703 @@
+<div class="main-app customer-detail-wrapper" *ngIf="bIsPageLoading">
+	<div class="row logo-topbar-area no-margin" #logoArea>
+		<div class="col-xs-12 no-padding">
+			<component-logo-area
+			[title]="'Customer Detail'"
+			></component-logo-area>
+		</div>
+	</div>
+
+	<div class="card">
+		<div class="card-header clearfix ">
+			<h3 class="card-title">
+				Customer Detail
+			</h3>
+		</div>
+
+		<div class="display-wrapper card-body"><!--display wrapper-->
+			<div class="display-area"><!--display area-->
+				<table class="table table-hover table-striped table-bordered">
+					<thead>
+						<tr class="black-muted-bg">
+							<th>Title</th>
+							<th>Value</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr *ngIf="bIsPortalLoading">
+							<td>Customer Logo</td>
+							<td>
+								<div class="pull-left">
+									<div *ngIf="status!==19">
+										<img [src]="customerPortal.logo" height="50">
+									</div>
+
+									<div *ngIf="status===19">
+										<fieldset>
+									    	<legend>Logo Upload Option</legend>
+							        		<div class="form-check">
+							        			<label class="form-check-label">
+							            			<input class="form-check-input" type="radio" [(ngModel)]="uploadFlag" [value]="true">
+							            			Upload with Url
+							        			</label>
+							        		</div>
+
+							        		<div class="form-check">
+							          			<label class="form-check-label">
+							            			<input class="form-check-input" type="radio" [(ngModel)]="uploadFlag" [value]="false">
+							            			Upload with file
+							        			</label>
+							        		</div>
+
+							        		<div>
+										    	<div class="form-group" *ngIf="uploadFlag">
+													<input type="text"  class="form-control" [(ngModel)]="paramValue">
+												</div>
+
+												<div class="form-group" *ngIf="!uploadFlag">
+													<input type="file" class="form-control" id="logo_file_upload" name="logo">
+												</div>
+										    </div>
+									    </fieldset>
+									</div>
+								</div>
+
+								<div class="pull-right" *ngIf="bIsEditable">
+									<button class="btn btn-success" (click)="editValue(19)" *ngIf="status!==19">
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									</button>
+
+									<button class="btn btn-primary" (click)="updatePortal()" *ngIf="status===19">
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									</button>
+
+									<button class="btn btn-default" (click)="cancel()" *ngIf="status===19">
+										<i class="fa fa-times" aria-hidden="true"></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+						
+						<tr>
+							<td>Name</td>
+							<td>
+								<div class="pull-left">
+									<div *ngIf="status!==1">
+										{{currentCustomer.name}}
+									</div>
+
+									<div *ngIf="status===1">
+										<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+										<div *ngIf="error" class="alert alert-danger">
+											{{error}}
+										</div>	
+									</div>
+								</div>
+
+								<div class="pull-right" *ngIf="bIsEditable">
+									<button class="btn btn-success" (click)="editValue(1)" *ngIf="status!==1">
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									</button>
+
+									<button class="btn btn-primary" (click)="update()" *ngIf="status===1">
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									</button>
+
+									<button class="btn btn-default" (click)="cancel()" *ngIf="status===1">
+										<i class="fa fa-times" aria-hidden="true"></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td>Customer Industry</td>
+							<td>
+								<div class="pull-left">
+									<div *ngIf="status!==2">
+										{{currentCustomer.industry}}
+									</div>
+
+									<div *ngIf="status===2">
+										<select class="form-control" (change)="onChangeIndustry($event.target.value)" [(ngModel)]="paramValue" required>
+											<option *ngFor="let type of INDUSTRY_OPTIONS" [value]="type">{{type}}</option>
+										</select>
+									</div>
+								</div>
+
+								<div class="pull-right" *ngIf="bIsEditable">
+									<button class="btn btn-success" (click)="editValue(2)" *ngIf="status!==2">
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									</button>
+
+									<button class="btn btn-primary" (click)="update()" *ngIf="status===2">
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									</button>
+
+									<button class="btn btn-default" (click)="cancel()" *ngIf="status===2">
+										<i class="fa fa-times" aria-hidden="true"></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td>Headquarter Address</td>
+							<td>
+								<div class="pull-left">
+									<div *ngIf="status!==3">
+										{{currentCustomer.address}}
+									</div>
+
+									<div *ngIf="status===3">
+										<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+										<div *ngIf="error" class="alert alert-danger">
+											{{error}}
+										</div>	
+									</div>
+								</div>
+
+								<div class="pull-right" *ngIf="bIsEditable">
+									<button class="btn btn-success" (click)="editValue(3)" *ngIf="status!==3">
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									</button>
+
+									<button class="btn btn-primary" (click)="update()" *ngIf="status===3">
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									</button>
+
+									<button class="btn btn-default" (click)="cancel()" *ngIf="status===3">
+										<i class="fa fa-times" aria-hidden="true"></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td>Customer Email</td>
+							<td>
+								<div class="pull-left">
+									<div *ngIf="status!==4">
+										{{currentCustomer.email}}
+									</div>
+
+									<div *ngIf="status===4">
+										<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+										<div *ngIf="error" class="alert alert-danger">
+											{{error}}
+										</div>	
+									</div>
+								</div>
+
+								<div class="pull-right" *ngIf="bIsEditable">
+									<button class="btn btn-success" (click)="editValue(4)" *ngIf="status!==4">
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									</button>
+
+									<button class="btn btn-primary" (click)="update()" *ngIf="status===4">
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									</button>
+
+									<button class="btn btn-default" (click)="cancel()" *ngIf="status===4">
+										<i class="fa fa-times" aria-hidden="true"></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td>Contact1</td>
+							<td>
+								<table class="table table-hover table-striped table-bordered">
+									<thead>
+										<tr class="black-muted-bg">
+											<th>Title</th>
+											<th>Value</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr>
+											<td>First Name</td>
+											<td>
+												<div class="pull-left">
+													<div *ngIf="status!==7">
+														<span *ngIf="currentCustomer.contact1">{{currentCustomer.contact1.firstName}}</span>
+													</div>
+
+													<div *ngIf="status===7">
+														<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+														<div *ngIf="error" class="alert alert-danger">
+															{{error}}
+														</div>	
+													</div>
+												</div>
+
+												<div class="pull-right" *ngIf="bIsEditable">
+													<button class="btn btn-success" (click)="editValue(7)" *ngIf="status!==7">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-primary" (click)="update()" *ngIf="status===7">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-default" (click)="cancel()" *ngIf="status===7">
+														<i class="fa fa-times" aria-hidden="true"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td>Last Name</td>
+											<td>
+												<div class="pull-left">
+													<div *ngIf="status!==8">
+														<span *ngIf="currentCustomer.contact1">{{currentCustomer.contact1.lastName}}</span>
+													</div>
+
+													<div *ngIf="status===8">
+														<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+														<div *ngIf="error" class="alert alert-danger">
+															{{error}}
+														</div>	
+													</div>
+												</div>
+
+												<div class="pull-right" *ngIf="bIsEditable">
+													<button class="btn btn-success" (click)="editValue(8)" *ngIf="status!==8">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-primary" (click)="update()" *ngIf="status===8">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-default" (click)="cancel()" *ngIf="status===8">
+														<i class="fa fa-times" aria-hidden="true"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td>Email</td>
+											<td>
+												<div class="pull-left">
+													<div *ngIf="status!==9">
+														<span *ngIf="currentCustomer.contact1">{{currentCustomer.contact1.email}}</span>
+													</div>
+
+													<div *ngIf="status===9">
+														<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+														<div *ngIf="error" class="alert alert-danger">
+															{{error}}
+														</div>	
+													</div>
+												</div>
+
+												<div class="pull-right" *ngIf="bIsEditable">
+													<button class="btn btn-success" (click)="editValue(9)" *ngIf="status!==9">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-primary" (click)="update()" *ngIf="status===9">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-default" (click)="cancel()" *ngIf="status===9">
+														<i class="fa fa-times" aria-hidden="true"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td>Phone Number</td>
+											<td>
+												<div class="pull-left">
+													<div *ngIf="status!==10">
+														<span *ngIf="currentCustomer.contact1">{{currentCustomer.contact1.phoneNumber}}</span>
+													</div>
+
+													<div *ngIf="status===10">
+														<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+														<div *ngIf="error" class="alert alert-danger">
+															{{error}}
+														</div>	
+													</div>
+												</div>
+
+												<div class="pull-right" *ngIf="bIsEditable">
+													<button class="btn btn-success" (click)="editValue(10)" *ngIf="status!==10">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-primary" (click)="update()" *ngIf="status===10">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-default" (click)="cancel()" *ngIf="status===10">
+														<i class="fa fa-times" aria-hidden="true"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+
+						<tr>
+							<td>Contact2</td>
+							<td>
+								<table class="table table-hover table-striped table-bordered">
+									<thead>
+										<tr class="black-muted-bg">
+											<th>Title</th>
+											<th>Value</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr>
+											<td>First Name</td>
+											<td>
+												<div class="pull-left">
+													<div *ngIf="status!==11">
+														<span *ngIf="currentCustomer.contact2">{{currentCustomer.contact2.firstName}}</span>
+													</div>
+
+													<div *ngIf="status===11">
+														<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+														<div *ngIf="error" class="alert alert-danger">
+															{{error}}
+														</div>	
+													</div>
+												</div>
+
+												<div class="pull-right" *ngIf="bIsEditable">
+													<button class="btn btn-success" (click)="editValue(11)" *ngIf="status!==11">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-primary" (click)="update()" *ngIf="status===11">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-default" (click)="cancel()" *ngIf="status===11">
+														<i class="fa fa-times" aria-hidden="true"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td>Last Name</td>
+											<td>
+												<div class="pull-left">
+													<div *ngIf="status!==12">
+														<span *ngIf="currentCustomer.contact2">{{currentCustomer.contact2.lastName}}</span>
+													</div>
+
+													<div *ngIf="status===12">
+														<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+														<div *ngIf="error" class="alert alert-danger">
+															{{error}}
+														</div>	
+													</div>
+												</div>
+
+												<div class="pull-right" *ngIf="bIsEditable">
+													<button class="btn btn-success" (click)="editValue(12)" *ngIf="status!==12">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-primary" (click)="update()" *ngIf="status===12">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-default" (click)="cancel()" *ngIf="status===12">
+														<i class="fa fa-times" aria-hidden="true"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td>Email</td>
+											<td>
+												<div class="pull-left">
+													<div *ngIf="status!==13">
+														<span *ngIf="currentCustomer.contact2">{{currentCustomer.contact2.email}}</span>
+													</div>
+
+													<div *ngIf="status===13">
+														<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+														<div *ngIf="error" class="alert alert-danger">
+															{{error}}
+														</div>	
+													</div>
+												</div>
+
+												<div class="pull-right" *ngIf="bIsEditable">
+													<button class="btn btn-success" (click)="editValue(13)" *ngIf="status!==13">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-primary" (click)="update()" *ngIf="status===13">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-default" (click)="cancel()" *ngIf="status===13">
+														<i class="fa fa-times" aria-hidden="true"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td>Phone Number</td>
+											<td>
+												<div class="pull-left">
+													<div *ngIf="status!==14">
+														<span *ngIf="currentCustomer.contact2">{{currentCustomer.contact2.phoneNumber}}</span>
+													</div>
+
+													<div *ngIf="status===14">
+														<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+														<div *ngIf="error" class="alert alert-danger">
+															{{error}}
+														</div>	
+													</div>
+												</div>
+
+												<div class="pull-right" *ngIf="bIsEditable">
+													<button class="btn btn-success" (click)="editValue(14)" *ngIf="status!==14">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-primary" (click)="update()" *ngIf="status===14">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-default" (click)="cancel()" *ngIf="status===14">
+														<i class="fa fa-times" aria-hidden="true"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+
+						<tr>
+							<td>Company Pin Color </td>
+							<td>
+								<div class="pull-left">
+									<div class="color-area" [style.background]="currentCustomer.color" *ngIf="status!==5"></div>
+									<div *ngIf="status===5">
+										<input [(colorPicker)]="paramValue" [style.background]="paramValue" [cpOutputFormat]="'hex'" [cpPosition]="'bottom'" class="form-control color-area" [(ngModel)]="paramValue" />
+									</div>
+								</div>
+
+								<div class="pull-right" *ngIf="bIsEditable">
+									<button class="btn btn-success" (click)="editValue(5)" *ngIf="status!==5">
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									</button>
+
+									<button class="btn btn-primary" (click)="update()" *ngIf="status===5">
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									</button>
+
+									<button class="btn btn-default" (click)="cancel()" *ngIf="status===5">
+										<i class="fa fa-times" aria-hidden="true"></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td>Emergency Contact</td>
+							<td>
+								<table class="table table-hover table-striped table-bordered">
+									<thead>
+										<tr class="black-muted-bg">
+											<th>Title</th>
+											<th>Value</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr>
+											<td>First Name</td>
+											<td>
+												<div class="pull-left">
+													<div *ngIf="status!==15">
+														<span *ngIf="currentCustomer.emergencyContact">{{currentCustomer.emergencyContact.firstName}}</span>
+													</div>
+
+													<div *ngIf="status===15">
+														<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+														<div *ngIf="error" class="alert alert-danger">
+															{{error}}
+														</div>	
+													</div>
+												</div>
+
+												<div class="pull-right" *ngIf="bIsEditable">
+													<button class="btn btn-success" (click)="editValue(15)" *ngIf="status!==15">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-primary" (click)="update()" *ngIf="status===15">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-default" (click)="cancel()" *ngIf="status===15">
+														<i class="fa fa-times" aria-hidden="true"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td>Last Name</td>
+											<td>
+												<div class="pull-left">
+													<div *ngIf="status!==16">
+														<span *ngIf="currentCustomer.emergencyContact">{{currentCustomer.emergencyContact.lastName}}</span>
+													</div>
+
+													<div *ngIf="status===16">
+														<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+														<div *ngIf="error" class="alert alert-danger">
+															{{error}}
+														</div>	
+													</div>
+												</div>
+
+												<div class="pull-right" *ngIf="bIsEditable">
+													<button class="btn btn-success" (click)="editValue(16)" *ngIf="status!==16">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-primary" (click)="update()" *ngIf="status===16">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-default" (click)="cancel()" *ngIf="status===16">
+														<i class="fa fa-times" aria-hidden="true"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td>Email</td>
+											<td>
+												<div class="pull-left">
+													<div *ngIf="status!==17">
+														<span *ngIf="currentCustomer.emergencyContact">{{currentCustomer.emergencyContact.email}}</span>
+													</div>
+
+													<div *ngIf="status===17">
+														<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+														<div *ngIf="error" class="alert alert-danger">
+															{{error}}
+														</div>	
+													</div>
+												</div>
+
+												<div class="pull-right" *ngIf="bIsEditable">
+													<button class="btn btn-success" (click)="editValue(17)" *ngIf="status!==17">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-primary" (click)="update()" *ngIf="status===17">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-default" (click)="cancel()" *ngIf="status===17">
+														<i class="fa fa-times" aria-hidden="true"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+
+										<tr>
+											<td>Phone Number</td>
+											<td>
+												<div class="pull-left">
+													<div *ngIf="status!==18">
+														<span *ngIf="currentCustomer.emergencyContact">{{currentCustomer.emergencyContact.phoneNumber}}</span>
+													</div>
+
+													<div *ngIf="status===18">
+														<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+														<div *ngIf="error" class="alert alert-danger">
+															{{error}}
+														</div>	
+													</div>
+												</div>
+
+												<div class="pull-right" *ngIf="bIsEditable">
+													<button class="btn btn-success" (click)="editValue(18)" *ngIf="status!==18">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-primary" (click)="update()" *ngIf="status===18">
+														<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+													</button>
+
+													<button class="btn btn-default" (click)="cancel()" *ngIf="status===18">
+														<i class="fa fa-times" aria-hidden="true"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+
+						<tr>
+							<td>Sign On Date </td>
+							<td>
+								<div class="pull-left">
+									<div *ngIf="status!==6">
+										{{currentCustomer.date}}
+									</div>
+
+									<div *ngIf="status===6">
+										<input type="text" class="form-control" [(ngModel)]="paramValue" required>
+										<div *ngIf="error" class="alert alert-danger">
+											{{error}}
+										</div>	
+									</div>
+								</div>
+
+								<div class="pull-right" *ngIf="bIsEditable">
+									<button class="btn btn-success" (click)="editValue(6)" *ngIf="status!==6">
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									</button>
+
+									<button class="btn btn-primary" (click)="update()" *ngIf="status===6">
+										<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+									</button>
+
+									<button class="btn btn-default" (click)="cancel()" *ngIf="status===6">
+										<i class="fa fa-times" aria-hidden="true"></i>
+									</button>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div><!--display area-->
+		</div>
+	</div>
+</div>

@@ -1,0 +1,461 @@
+<div class="sensor-detail-wrapper" *ngIf="isTypeLoading" #detailWrapper>
+	<div class="action-wrapper button-area"><!--action wrapper-->
+		<div class="inline">
+			<button md-raised-button class="btn btn-default" [ngClass]="{'btn-primary': nActionNumber === 0}" (click)="changeStatus(0)">Status</button>
+		</div>
+		<div class="inline">
+			<button md-raised-button class="btn btn-default" [ngClass]="{'btn-primary': nActionNumber === 1}" (click)="changeStatus(1)" *ngIf="isVocAnalytics">VoC Analytics</button>
+		</div>
+		<div class="inline">
+			<button md-raised-button class="btn btn-default" [ngClass]="{'btn-primary': nActionNumber === 2}" (click)="changeStatus(2)">VoC Raw</button>
+		</div>
+		<div class="inline">
+			<button md-raised-button class="btn btn-default" [ngClass]="{'btn-primary': nActionNumber === 3}" (click)="changeStatus(3)">Processed Data</button>
+		</div>
+		<div class="inline">
+			<button md-raised-button class="btn btn-default" [ngClass]="{'btn-primary': nActionNumber === 4}" (click)="changeStatus(4)" *ngIf="isDebug">Debug</button>
+		</div>
+	</div><!--action wrapper-->
+
+	<div class="card">
+		<div class="card-header clearfix ">
+			<h3 class="card-title">
+				Sensor Type: <span class="text-info">{{strSensorTypeName}}</span>
+			</h3>
+		</div>
+
+		<div class="display-wrapper card-body"><!--display wrapper-->
+			<table class="table table-bordered" *ngIf="!isRowHeader && selectedSensorType"><!--header type-->
+				<thead>
+					<tr class="black-muted-bg">
+						<th *ngFor="let head of selectedSensorType.heads">
+							{{head.name}}
+						</th>
+					</tr>
+				</thead>
+
+				<tbody *ngIf="isDataLoading">
+					<tr *ngFor="let data of values; let colInd = index;">
+						<td *ngFor="let head of selectedSensorType.heads">
+							<div *ngIf="data[head.id] === 'primaryKey'">
+								{{colInd+1}}
+							</div>
+
+							<div *ngIf="data[head.id] !== 'primaryKey'">
+								{{data[head.id]}}	
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table><!--header type-->
+
+			<table class="table table-bordered" *ngIf="isRowHeader && selectedSensorType"><!--header row type-->
+				<thead *ngIf="isHeaderShow">
+					<tr class="black-muted-bg">
+						<th *ngFor="let head of selectedSensorType.heads">
+							{{head.name}}
+						</th>
+					</tr>
+				</thead>
+
+				<tbody *ngIf="isDataLoading && isRowShow && selectedSensorType.heads">
+					<tr *ngFor="let row of selectedSensorType.rows">
+						<td  *ngFor="let head of selectedSensorType.heads">
+							<div *ngIf="(!values[row.id] &&  head['primaryKey']) || (values[row.id] && values[row.id][head.id] === 'primaryKey')">
+								{{row.name}}
+							</div>
+							<div *ngIf="values">
+								<div *ngIf="values[row.id] && values[row.id][head.id] !== 'primaryKey'">
+									{{values[row.id][head.id]}}	
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+
+				<tbody *ngIf="isDataLoading && isRowShow && !selectedSensorType.heads">
+					<tr *ngFor="let row of selectedSensorType.rows">
+						<td>{{row.name}}</td>
+						<td>
+							<div *ngIf="values">
+								{{values[row.id]}}		
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table><!--header row type-->
+		</div><!--display wrapper-->
+	</div>
+
+	<div class="card device-action-area" *ngIf="userRole === userRoles[0] && isEditStatus">
+		<div class="card-header clearfix ">
+			<h3 class="card-title">
+				Sensor Device Control
+			</h3>
+		</div>
+
+		<div class="display-wrapper card-body">
+			<div class="status">
+				<h4 *ngIf="isDeviceOnline">Status: ON</h4>
+				<h4 *ngIf="!isDeviceOnline">Status: OFF</h4>
+			</div>
+
+			<div class="action no-margin row" *ngIf="!isGetConfig">
+				<div class="col-sm-12 flex-wrapper">
+					<md-spinner></md-spinner>
+				</div>
+			</div>
+
+			<div class="action no-margin row" *ngIf="isGetConfig">
+				<div class="col-sm-3">
+					<button md-raised-button class="btn btn-info full-width" (click)="controlSensorDevice(1)" [disabled]="nActionStatus>4">Configure</button>	
+				</div>
+
+				<div class="col-sm-3">
+					<button md-raised-button class="btn btn-primary full-width" (click)="controlSensorDevice(2)" [disabled]="nActionStatus===2 || nActionStatus>4">Start</button>	
+				</div>
+
+				<div class="col-sm-3">
+					<button md-raised-button class="btn btn-warning full-width" (click)="controlSensorDevice(3)" [disabled]="nActionStatus===3 || nActionStatus>4">Stop</button>
+				</div>
+
+				<div class="col-sm-3">
+					<button md-raised-button class="btn btn-danger full-width" (click)="controlSensorDevice(4)" [disabled]="nActionStatus===4 || nActionStatus>4">Shut down</button>	
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="card" *ngIf="userRole === userRoles[0] && isEditStatus">
+		<div class="card-header clearfix ">
+			<h3 class="card-title">
+				Sensor Param Keys
+			</h3>
+		</div>
+
+		<div class="display-wrapper card-body">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Key</th>
+					</tr>
+				</thead>
+
+				<tbody *ngIf="selectedSensorType['tableType'] === TABLETYPE[0]">
+					<tr *ngFor="let type of selectedSensorType['heads']">
+						<td>{{type['name']}}</td>
+						<td>{{type['id']}}</td>
+					</tr>
+				</tbody>
+
+				<tbody *ngIf="selectedSensorType['tableType'] === TABLETYPE[1]">
+					<tr *ngFor="let type of selectedSensorType['rows']">
+						<td>{{type['name']}}</td>
+						<td>{{type['id']}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="card" *ngIf="isEditStatus">
+		<div class="card-header clearfix ">
+			<h3 class="card-title">
+				Sensor LCD Chart
+			</h3>
+		</div>
+
+		<div class="display-wrapper card-body" #chartBodyElement>
+			<div class="flex-wrapper">
+				<md-spinner *ngIf="!isChart"></md-spinner>	
+			</div>
+			
+		    <md-tab-group *ngIf="isChart" (selectedIndexChange)="onSelectTab($event)" [selectedIndex]="nSelectedChartInd">
+				<md-tab label="ADC"><!-- ADC start -->
+					<div class="chart-wrapper">
+						<div id="adcChartDiv" [style.width.%]="100" [style.height.px]="500" #adcTabElement></div>
+					</div>
+				</md-tab><!-- ADC end -->
+
+				<md-tab label="CDC"><!-- CDC start -->
+					<div class="chart-wrapper" >
+						<div id="cdcChartDiv" [style.width.%]="100" [style.height.px]="500" #cdcTabElement></div>
+					</div>
+				</md-tab><!-- CDC start -->
+
+				<md-tab label="Flow"><!-- Flow start -->
+					<div class="chart-wrapper" #flowTabElement>
+						<h3 class="text-center">This flow chart is coming soon!</h3>
+					</div>
+				</md-tab><!-- Flow start -->
+			</md-tab-group>
+
+		</div>
+	</div>
+
+	<div class="card" *ngIf="isEditStatus">
+		<div class="card-header clearfix ">
+			<h3 class="card-title">
+				Sensor Name: <span class="text-info">{{selectedSensor.name}}</span>
+			</h3>
+		</div>
+
+		<div class="card-body">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th width="20%">Title</th>
+						<th width="60%">Value</th>
+						<th width="20%">Action</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr>
+						<td>Name</td>
+
+						<td>
+							<div *ngIf="nStatus!==1">
+								{{selectedSensor.name}}
+							</div>
+
+							<div *ngIf="nStatus===1">
+								<md-input-container class="full-width">
+									<input mdInput type="text" class="form-control" [(ngModel)]="paramValue" required>
+								</md-input-container>
+								<div *ngIf="error" class="alert alert-danger">
+									{{error}}
+								</div>	
+							</div>
+						</td>
+
+						<td>
+							<button md-mini-fab class="btn btn-success" (click)="editValue(1)" *ngIf="nStatus!==1">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+
+							<button md-mini-fab class="btn btn-primary" (click)="update()" *ngIf="nStatus===1">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+
+							<button md-mini-fab class="btn btn-default" (click)="cancel()" *ngIf="nStatus===1">
+								<i class="fa fa-times" aria-hidden="true"></i>
+							</button>
+						</td>
+					</tr>
+
+					<tr>
+						<td>Address</td>
+
+						<td>
+							<div *ngIf="nStatus!==2">
+								{{selectedSensor.address}}
+							</div>
+
+							<div *ngIf="nStatus===2">
+								<md-input-container class="full-width">
+									<input mdInput type="text" class="form-control" [(ngModel)]="paramValue" required>
+								</md-input-container>
+								<div *ngIf="error" class="alert alert-danger">
+									{{error}}
+								</div>	
+							</div>
+						</td>
+
+						<td>
+							<button md-mini-fab class="btn btn-success" (click)="editValue(2)" *ngIf="nStatus!==2">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+
+							<button md-mini-fab class="btn btn-primary" (click)="update()" *ngIf="nStatus===2">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+
+							<button md-mini-fab class="btn btn-default" (click)="cancel()" *ngIf="nStatus===2">
+								<i class="fa fa-times" aria-hidden="true"></i>
+							</button>
+						</td>
+					</tr>
+
+					<tr>
+						<td>Availability</td>
+
+						<td>
+							<div *ngIf="nStatus!==3" class="capitalize">
+								{{selectedSensor.availability}}
+							</div>
+
+							<div *ngIf="nStatus===3">
+								<md-select [(ngModel)]="paramValue">
+		                            <md-option class="full-width" *ngFor="let availibility of AVAILABILITIES" [value]="availibility">
+		                                {{ availibility }}
+		                            </md-option>
+		                        </md-select>
+							</div>
+						</td>
+
+						<td>
+							<button md-mini-fab class="btn btn-success" (click)="editValue(3)" *ngIf="nStatus!==3">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+
+							<button md-mini-fab class="btn btn-primary" (click)="update()" *ngIf="nStatus===3">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+
+							<button md-mini-fab class="btn btn-default" (click)="cancel()" *ngIf="nStatus===3">
+								<i class="fa fa-times" aria-hidden="true"></i>
+							</button>
+						</td>
+					</tr>
+
+					<tr>
+						<td>Latitude</td>
+
+						<td>
+							<div *ngIf="nStatus!==4">
+								{{selectedSensor.lat}}
+							</div>
+
+							<div *ngIf="nStatus===4">
+								<md-input-container class="full-width">
+									<input mdInput type="number" class="form-control" [(ngModel)]="paramValue" required>
+								</md-input-container>
+								<div *ngIf="error" class="alert alert-danger">
+									{{error}}
+								</div>	
+							</div>
+						</td>
+
+						<td>
+							<button md-mini-fab class="btn btn-success" (click)="editValue(4)" *ngIf="nStatus!==4">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+
+							<button md-mini-fab class="btn btn-primary" (click)="update()" *ngIf="nStatus===4">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+
+							<button md-mini-fab class="btn btn-default" (click)="cancel()" *ngIf="nStatus===4">
+								<i class="fa fa-times" aria-hidden="true"></i>
+							</button>
+						</td>
+					</tr>
+
+					<tr>
+						<td>Longitude</td>
+
+						<td>
+							<div *ngIf="nStatus!==5">
+								{{selectedSensor.lng}}
+							</div>
+
+							<div *ngIf="nStatus===5">
+								<md-input-container class="full-width">
+									<input mdInput type="number" class="form-control" [(ngModel)]="paramValue" required>
+								</md-input-container>
+								<div *ngIf="error" class="alert alert-danger">
+									{{error}}
+								</div>	
+							</div>
+						</td>
+
+						<td>
+							<button md-mini-fab class="btn btn-success" (click)="editValue(5)" *ngIf="nStatus!==5">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+
+							<button md-mini-fab class="btn btn-primary" (click)="update()" *ngIf="nStatus===5">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+
+							<button md-mini-fab class="btn btn-default" (click)="cancel()" *ngIf="nStatus===5">
+								<i class="fa fa-times" aria-hidden="true"></i>
+							</button>
+						</td>
+					</tr>
+
+					<tr>
+						<td>Description</td>
+
+						<td>
+							<div *ngIf="nStatus!==6">
+								{{selectedSensor.description}}
+							</div>
+
+							<div *ngIf="nStatus===6">
+								<md-input-container class="full-width">
+									<textarea mdInput [(ngModel)]="paramValue" required></textarea>
+								</md-input-container>
+								<div *ngIf="error" class="alert alert-danger">
+									{{error}}
+								</div>	
+							</div>
+						</td>
+
+						<td>
+							<button md-mini-fab class="btn btn-success" (click)="editValue(6)" *ngIf="nStatus!==6">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+
+							<button md-mini-fab class="btn btn-primary" (click)="update()" *ngIf="nStatus===6">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+
+							<button md-mini-fab class="btn btn-default" (click)="cancel()" *ngIf="nStatus===6">
+								<i class="fa fa-times" aria-hidden="true"></i>
+							</button>
+						</td>
+					</tr>
+
+					<tr>
+						<td>Serial Number</td>
+
+						<td>
+							<div *ngIf="nStatus!==7">
+								{{selectedSensor['serialNumber']}}
+							</div>
+
+							<div *ngIf="nStatus===7">
+								<md-input-container class="full-width">
+									<input mdInput type="text" class="form-control" [(ngModel)]="paramValue" required>
+								</md-input-container>
+								<div *ngIf="error" class="alert alert-danger">
+									{{error}}
+								</div>
+							</div>
+						</td>
+
+						<td>
+							<button md-mini-fab class="btn btn-success" (click)="editValue(7)" *ngIf="nStatus!==7">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+
+							<button md-mini-fab class="btn btn-primary" (click)="update()" *ngIf="nStatus===7">
+								<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+							</button>
+
+							<button md-mini-fab class="btn btn-default" (click)="cancel()" *ngIf="nStatus===7">
+								<i class="fa fa-times" aria-hidden="true"></i>
+							</button>
+						</td>
+					</tr>
+
+					<tr>
+						<td>CSV File</td>
+
+						<td>
+							<div>
+								<a href="{{selectedSensor.csvUrl}}" download *ngIf="selectedSensor['csvUrl']">Download</a>
+								<div *ngIf="!selectedSensor['csvUrl']">No File</div>
+							</div>
+						</td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,31 @@
+.sensor-topbar-wrap {
+  margin: 10px;
+
+  .action-area-wrap {
+    width: 400px;
+  }
+
+  .title {
+    margin: 0px;
+  }
+
+  .action-area {
+    button {
+      width: 150px;
+      border: 1px solid #000 !important;
+
+      &.active {
+        background: #ccc;
+        border: 2px solid #000 !important;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .sensor-topbar-wrap {
+    .action-area-wrap {
+      width: 320px;
+    }
+  }
+}

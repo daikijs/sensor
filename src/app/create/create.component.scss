@@ -1,0 +1,23 @@
+.create-header-wrapper {
+  margin: 10px 0;
+  
+  .title {
+    margin: 0px;
+  }
+
+  .logo {
+    img {
+      position: absolute;
+      top: 1em;
+      left: 1em;
+      width: auto;
+      height: 60px;
+    }
+  }
+}
+
+.create-wrapper {
+  .create-section {
+    margin: 1em;
+  }
+}

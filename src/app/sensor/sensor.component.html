@@ -1,0 +1,20 @@
+<div class="main-app senosor-area">
+	<div class="row sensor-topbar-area no-margin" #sensorTopBarScreen>
+		<div class="col-xs-12 no-padding">
+			<component-sensor-topbar
+			></component-sensor-topbar>
+		</div>
+	</div>
+
+	<div class="row sensor-main-area no-margin" [style.height.px]="mainAreaH" *ngIf="isPageLoading">
+		<div class="row sensor-map-area no-margin">
+			<div class="col-xs-12 no-padding">
+				<component-sensor-detail
+				[windowH] = "mainAreaH"
+				[selectedSensor]="selectedSensor"
+				[sensorKey]="sensorKey"
+				></component-sensor-detail>
+			</div>
+		</div>
+	</div>
+</div>

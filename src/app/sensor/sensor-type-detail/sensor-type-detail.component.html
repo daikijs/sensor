@@ -1,0 +1,84 @@
+<div class="sensor-type-detail-wrapper full-height" #entireScreen *ngIf="isPageLoading">
+	<div class="row sensor-type-action-area" #buttonsScreen *ngIf="selectedSensorTypeId > -1">
+		<div class="pull-right">
+			<button md-raised-button class="btn btn-default click" [ngClass]="{'btn-primary': type ===0 }" (click)="goTargetNavigation(0)">Status</button>
+			<button md-raised-button class="btn btn-default click" [ngClass]="{'btn-primary': type ===1 }" (click)="goTargetNavigation(1)">VoC Analytics</button>
+			<button md-raised-button class="btn btn-default click" [ngClass]="{'btn-primary': type ===2 }" (click)="goTargetNavigation(2)">VoC Raw</button>
+			<button md-raised-button class="btn btn-default click" [ngClass]="{'btn-primary': type ===3 }" (click)="goTargetNavigation(3)">Processed Data</button>
+			<button md-raised-button class="btn btn-default click" [ngClass]="{'btn-primary': type ===4 }" (click)="goTargetNavigation(4)" *ngIf="isDebugDisplay">Debug</button>
+		</div>	
+	</div>
+
+	<div class="row no-margin" [style.height.px]="nMAHeight">
+		<div class="col-sm-3 sensor-type-area full-height"><!-- display sensor type -->
+			<div class="row no-margin">
+				<h3>Sensor Types</h3>
+			</div>
+
+			<div class="list-group">
+				<a class="row no-margin click list-group-item list-group-item-action" *ngFor="let sensor of arrSensorTypes;let i = index;" (click)="selectSensorType(i)" [ngClass]="{active: selectedSensorTypeId === i}">
+					<div class="col-xs-2 no-padding">
+						<div class="full-width" *ngIf="i!==selectedSensorTypeId">
+							<i class="fa fa-plus" aria-hidden="true"></i>
+						</div>
+						<div class="full-width" *ngIf="i===selectedSensorTypeId">
+							<i class="fa fa-minus" aria-hidden="true"></i>
+						</div>
+					</div>
+
+					<div class="col-xs-10 no-padding">
+						<div class="heading-widget pull-left">
+							<h4>{{sensor.typeName}}</h4>	
+						</div>
+						<div class="pull-right" *ngIf="isCreatable">
+							<div class="edit-item inline">
+								<i class="fa fa-pencil text-success" aria-hidden="true" (click)="editSensorType(sensor)"></i>	
+	 						</div>
+							<div class="delete-item inline">
+								<i class="fa fa-trash-o text-danger" aria-hidden="true" (click)="deleteSensorType(sensor.$key)"></i>	
+	 						</div>
+						</div>
+					</div>
+				</a>
+			</div>
+
+			<div class="row no-margin" *ngIf="isCreateSensorType || isEditSensorType">
+				<form [formGroup]="stForm" (ngSubmit)="submitSensorType()">
+					<div class="form-group">
+						<md-input-container class="full-width">
+					    	<input type="text" mdInput placeholder="Sensor Type Name" formControlName="name" name="name" required>
+					    </md-input-container>
+					</div>
+
+					<button md-raised-button class="btn btn-success">Submit</button>
+					<a md-raised-button class="btn btn-default" (click)="cancelSensorType()">Cancel</a>
+				</form>
+			</div>
+
+			<div class="row no-margin create-section" *ngIf="isCreatable">
+				<div class="col-xs-12 no-padding">
+					<button color="primary" md-fab class="pull-right" (click)="showSensorTypeForm()">+</button>
+				</div>
+			</div>
+		</div><!-- display sensor type -->
+
+		<div class="col-sm-9 sensor-type-edit-area full-height" *ngIf="selectedSensorTypeId !== -1"><!-- sensor detail area -->
+
+			<div class="row describe-section">
+				<component-sensor-type-category
+				[sensorType]="focusCategory"
+				[categoryType]="type"
+				[isCreatable]="isCreatable"
+				[sensorTypeName]="sensorTypeLinkName"
+				[selectedSensorTypeKey]="selectedSensorTypeKey"
+				(updateTableTypeEmit)="updateTableTypeEmit($event)"
+				(createRowParamEmit)="createRowParamEmit($event)"
+				(createHeaderParamEmit)="createHeaderParamEmit($event)"
+				(updateRowParamEmit)="updateRowParamEmit($event)"
+				(updateHeaderParamEmit)="updateHeaderParamEmit($event)"
+				(gotoSensorTypeInfoEmit)="gotoSensorTypeInfoEmit()"
+				></component-sensor-type-category>
+			</div>
+		</div><!-- sensor detail area -->
+	</div>
+</div>

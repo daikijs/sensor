@@ -1,0 +1,43 @@
+.st-category-wrapper {
+  font-size: 16px;
+
+  .table-type {
+    display: flex;
+    flex-flow: row;
+
+    img {
+      width: 200px;
+    }
+  }
+
+  .params-form {
+  	.row-fields {
+  	  margin-top: 30px;
+  	}
+
+  	.action-area {
+  	  margin-top: 20px;
+  	}
+  }
+
+  .create-param-form {
+  	margin-top: 30px;
+  }
+}
+
+.params-form {
+  .alert-danger {
+  	background-color: transparent;
+  	border-color: transparent;
+  }
+}
+
+.sensor-type-link {
+  margin-top: 30px;
+}
+
+.sensor-type-link {
+  a {
+  	text-decoration: underline;
+  }
+}

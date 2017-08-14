@@ -1,0 +1,14 @@
+<div class="confirm-content">
+	<h2 md-dialog-title>Delete</h2>
+	<md-dialog-content>
+		<div class="content-wrapper" [innerHTML]="confirmContent"></div>
+	</md-dialog-content>
+	<md-dialog-actions>
+	  <button md-button color="primary" (click)="agree()">
+	  	<h4>Yes</h4>
+	  </button>
+	  <button md-button (click)="close()">
+	  	<h4>No</h4>
+	  </button>
+	</md-dialog-actions>
+</div>

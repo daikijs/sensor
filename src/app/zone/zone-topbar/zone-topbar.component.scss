@@ -1,0 +1,20 @@
+.zone-topbar-wrap {
+  margin: 0 1em;
+
+  .title-area {
+    margin: 20px;
+    font-style: italic;
+  }
+
+  .action-area-wrap {
+    width: 400px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .zone-topbar-wrap {
+    .action-area-wrap {
+      width: 320px;
+    }
+  }
+}

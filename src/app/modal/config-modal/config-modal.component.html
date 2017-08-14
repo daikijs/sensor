@@ -1,0 +1,872 @@
+<div class="config-modal-area">
+	<div class="modal-header">
+		<button type="button" class="close" (click)="close()">&times;</button>
+		<div class="modal-title">Sensor Configuration</div>
+	</div>
+	<div class="modal-body">
+		<div class="modal-step" *ngIf="nCurrentStep === 1">
+			<div class="header">
+				Select the Mode
+			</div>
+
+			<div class="body">
+				<div class="container-fluid">
+					<div class="row select-mode-area">
+						<div class="col-xs-6 form-group">
+							<md-select placeholder="Select the Mode" class="full-width" [(ngModel)]="currentType" [required]="true" >
+		                        <md-option *ngFor="let type of configTypes" [value]="type">
+		                            {{ type }}
+		                        </md-option>
+		                    </md-select>		
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="footer">
+				<button md-button disabled="true">Previous</button>
+				<button md-button (click)="nextStep()">Next</button>
+			</div>
+		</div>
+
+		<div class="modal-step" *ngIf="nCurrentStep === 2">
+			<div class="header">
+				Set the Number for the steps
+			</div>
+
+			<div class="body">
+				<form [formGroup]="numberForm">
+					<div class="container-fluid">
+						<div class="row select-mode-area">
+							<div class="col-xs-6 form-group">
+								<md-input-container class="full-width">
+									<input mdInput type="number" class="form-control text-center" placeholder="Number of Steps" formControlName="stepNumber" name="stepNumber"  min="1" max="10" required>
+								</md-input-container>
+							</div>
+
+							<div class="col-xs-6 form-group">
+								<md-input-container class="full-width">
+									<input mdInput type="number" class="form-control text-center" placeholder="Number of Runs" formControlName="runNumber" name="runNumber"  min="1" max="100" required>
+								</md-input-container>	
+							</div>
+						</div>
+					</div>
+				</form>
+
+				<div class="alert alert-danger" *ngIf="!numberForm.valid">
+					Please fill in all fields!
+				</div>
+			</div>
+
+			<div class="footer">
+				<button md-button (click)="previousStep()">Previous</button>
+				<button md-button (click)="nextStep()" [disabled]="!numberForm.valid">Next</button>
+			</div>
+		</div>
+
+		<div class="modal-step" *ngIf="nCurrentStep>2 && nCurrentStep<=(nStepNumber+2)">
+			<div class="header">
+				Step-{{nCurrentStep-2}}
+			</div>
+
+			<div class="body">
+				<form [formGroup]="absoluteForm" *ngIf="currentType === configTypes[0]"><!-- start absolute -->
+					<table class="table table-responsive table-bordered">
+						<thead>
+							<tr>
+								<th>Params</th>
+								<th>T_idle</th>
+								<th>T_target</th>
+								<th>t1</th>
+								<th>t2</th>
+								<th>t3</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr>
+								<td>KP1</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp1TIdle" name="kp1TIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp1TTarget" name="kp1TTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp1T1" name="kp1T1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp1T2" name="kp1T2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp1T3" name="kp1T3" min="-30" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>KP2</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp2TIdle" name="kp2TIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp2TTarget" name="kp2TTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp2T1" name="kp2T1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp2T2" name="kp2T2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp2T3" name="kp2T3" min="-30" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>KP3</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp3TIdle" name="kp3TIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp3TTarget" name="kp3TTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp3T1" name="kp3T1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp3T2" name="kp3T2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp3T3" name="kp3T3" min="-30" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>KP4</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp4TIdle" name="kp4TIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp4TTarget" name="kp4TTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp4T1" name="kp4T1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp4T2" name="kp4T2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kp4T3" name="kp4T3" min="-30" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>PCF</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfTIdle" name="pcfTIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfTTarget" name="pcfTTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfT1" name="pcfT1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfT2" name="pcfT2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfT3" name="pcfT3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>Injector</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectTIdle" name="injectTIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectTTarget" name="injectTTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectT1" name="injectT1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectT2" name="injectT2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectT3" name="injectT3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>Column1</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1TIdle" name="c1TIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1TTarget" name="c1TTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1T1" name="c1T1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1T2" name="c1T2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1T3" name="c1T3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>Column2</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2TIdle" name="c2TIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2TTarget" name="c2TTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2T1" name="c2T1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2T2" name="c2T2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2T3" name="c2T3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>Column3</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3TIdle" name="c3TIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3TTarget" name="c3TTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3T1" name="c3T1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3T2" name="c3T2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3T3" name="c3T3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<md-checkbox formControlName="saveData" name="saveData">Save Data</md-checkbox>
+								</div>			
+							</div>
+
+							<div class="col-sm-6">
+								<div class="form-group">
+								    <md-input-container class="full-width">
+								    	<input type="number" mdInput placeholder="Total Runtime(s)" formControlName="totalRuntime" name="totalRuntime" min="0" required>
+								    </md-input-container>
+								</div>		
+							</div>
+						</div>
+					</div>
+				</form><!-- end absolute -->
+
+				<form [formGroup]="deltaForm" *ngIf="currentType === configTypes[1]"><!-- start delta -->
+					<table class="table table-responsive table-bordered">
+						<thead>
+							<tr>
+								<th>Params</th>
+								<th>T_idle</th>
+								<th>T_target</th>
+								<th>t1</th>
+								<th>t2</th>
+								<th>t3</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr>
+								<td>KPADelta</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpaTIdle" name="kpaTIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpaTTarget" name="kpaTTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpaT1" name="kpaT1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpaT2" name="kpaT2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpaT3" name="kpaT3" min="-30" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>KPBDelta</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpbTIdle" name="kpbTIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpbTTarget" name="kpbTTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpbT1" name="kpbT1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpbT2" name="kpbT2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpbT3" name="kpbT3" min="-30" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>PCF</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfTIdle" name="pcfTIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfTTarget" name="pcfTTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfT1" name="pcfT1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfT2" name="pcfT2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfT3" name="pcfT3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>Injector</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectTIdle" name="injectTIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectTTarget" name="injectTTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectT1" name="injectT1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectT2" name="injectT2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectT3" name="injectT3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>Column1</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1TIdle" name="c1TIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1TTarget" name="c1TTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1T1" name="c1T1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1T2" name="c1T2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1T3" name="c1T3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>Column2</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2TIdle" name="c2TIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2TTarget" name="c2TTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2T1" name="c2T1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2T2" name="c2T2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2T3" name="c2T3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>Column3</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3TIdle" name="c3TIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3TTarget" name="c3TTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3T1" name="c3T1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3T2" name="c3T2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3T3" name="c3T3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<md-checkbox formControlName="saveData" name="saveData">Save Data</md-checkbox>
+								</div>			
+							</div>
+
+							<div class="col-sm-6">
+								<div class="form-group">
+								    <md-input-container>
+								    	<input type="number" mdInput placeholder="Total Runtime(s)" formControlName="totalRuntime" name="totalRuntime" min="0" required>
+								    </md-input-container>
+								</div>		
+							</div>
+						</div>
+					</div>
+				</form><!-- end delta -->
+
+				<form [formGroup]="fracDeltaForm" *ngIf="currentType === configTypes[2]"><!-- start frac-delta -->
+					<table class="table table-responsive table-bordered">
+						<thead>
+							<tr>
+								<th>Params</th>
+								<th>T_idle</th>
+								<th>T_target</th>
+								<th>t1</th>
+								<th>t2</th>
+								<th>t3</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr>
+								<td>KPAFracDelta</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpaTIdle" name="kpaTIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpaTTarget" name="kpaTTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpaT1" name="kpaT1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpaT2" name="kpaT2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpaT3" name="kpaT3" min="-30" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>KPBFracDelta</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpbTIdle" name="kpbTIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpbTTarget" name="kpbTTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpbT1" name="kpbT1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpbT2" name="kpbT2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="kpbT3" name="kpbT3" min="-30" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>PCF</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfTIdle" name="pcfTIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfTTarget" name="pcfTTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfT1" name="pcfT1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfT2" name="pcfT2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="pcfT3" name="pcfT3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>Injector</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectTIdle" name="injectTIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectTTarget" name="injectTTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectT1" name="injectT1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectT2" name="injectT2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="injectT3" name="injectT3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>Column1</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1TIdle" name="c1TIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1TTarget" name="c1TTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1T1" name="c1T1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1T2" name="c1T2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c1T3" name="c1T3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>Column2</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2TIdle" name="c2TIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2TTarget" name="c2TTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2T1" name="c2T1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2T2" name="c2T2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c2T3" name="c2T3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+
+							<tr>
+								<td>Column3</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3TIdle" name="c3TIdle" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3TTarget" name="c3TTarget" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3T1" name="c3T1" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3T2" name="c3T2" min="-30" required>
+									</md-input-container>
+								</td>
+								<td>
+									<md-input-container>
+										<input mdInput type="number" class="form-control text-center" formControlName="c3T3" name="c3T3" min="0" required>
+									</md-input-container>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<md-checkbox formControlName="saveData" name="saveData">Save Data</md-checkbox>
+								</div>			
+							</div>
+
+							<div class="col-sm-6">
+								<div class="form-group">
+								    <md-input-container>
+								    	<input type="number" mdInput placeholder="Total Runtime(s)" formControlName="totalRuntime" name="totalRuntime" min="0" required>
+								    </md-input-container>
+								</div>		
+							</div>
+						</div>
+					</div>
+				</form><!-- end frac-delta -->
+
+				<div class="alert alert-danger" *ngIf="(!absoluteForm.valid && (currentType === configTypes[0])) ||
+				(!deltaForm.valid && (currentType === configTypes[1])) ||
+				(!fracDeltaForm.valid && (currentType === configTypes[2]))">
+					Please fill in all fields!
+				</div>
+			</div>
+
+			<div class="footer">
+				<button md-button (click)="previousStep()">Previous</button>
+				<button md-button (click)="nextStep()" [disabled]="(!absoluteForm.valid && (currentType === configTypes[0])) ||
+				(!deltaForm.valid && (currentType === configTypes[1])) ||
+				(!fracDeltaForm.valid && (currentType === configTypes[2]))">Next</button>
+			</div>
+		</div>
+
+		<div class="modal-step" *ngIf="nCurrentStep === (3 + nStepNumber)">
+			<div class="header">
+				Thanks for setting the parameters through all steps!
+			</div>
+
+			<div class="footer">
+				<button md-button (click)="previousStep()">Previous</button>
+				<button md-button (click)="submitParams()">Submit</button>
+			</div>
+		</div>
+
+	</div>
+</div>

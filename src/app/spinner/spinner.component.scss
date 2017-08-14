@@ -1,0 +1,43 @@
+.spinner-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  z-index: 999;
+
+  .dimmer {
+  	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: #000;
+	opacity: 0.5;
+	width: 100%;
+	height: 100%;
+  }
+
+  .loading-bg {
+  	position: absolute;
+	display: inline-block;
+	top: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	padding: 14px 20px;
+	background-color: #fff;
+	border-radius: 15px;
+	text-align: center;
+
+	  .loader {
+	  	width: 24px;
+	    height: 30px;
+	  }
+  }
+}
+
+.spinner-wrapper {
+  svg {
+  	path, rect {
+  	  fill: #ff6700;
+  	}
+  }
+}

@@ -1,0 +1,23 @@
+<md-toolbar *ngIf="bIsLogin">
+	<div class="logo-area">
+		<img md-list-avatar [src]="logoUrl" class="full-height" alt="logo">	
+	</div>
+
+    <!-- This fills the remaining space of the current row -->
+    <span class="fill-remaining-space"></span>
+    <button class="menu-button" md-raised-button color="primary" [mdMenuTriggerFor]="menu"><md-icon>menu</md-icon></button>
+	<md-menu #menu="mdMenu">
+		<button md-menu-item (click)="gotoDashboard()">
+			<md-icon>dashboard</md-icon>
+			<div>Dashboard</div>
+		</button>
+		<button md-menu-item (click)="back()">
+			<md-icon>settings_backup_restore</md-icon>
+			<div>Back</div>
+		</button>
+		<button md-menu-item (click)="logoout()">
+			<md-icon class="fa fa-sign-out" aria-hidden="true"></md-icon>
+			<div>Log out</div>
+		</button>
+	</md-menu>
+</md-toolbar>

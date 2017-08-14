@@ -1,0 +1,91 @@
+:host {
+	display: block;
+    height: 100%;
+}
+
+nav ul {
+	position: relative;
+}
+
+nav>ul ul li::before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 8px;
+    left: 23px;
+    top: 16px;
+    border-top: 1px solid #7A7A7A;
+    z-index: 1;
+}
+
+nav>ul>li>ul::before {
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: 1;
+    left: 23px;
+    top: 0;
+    bottom: 0;
+    border-left: 1px solid #7A7A7A;
+}
+
+nav li.active.open ul {
+	display: block;
+}
+
+.admin-wrapper aside {
+	width: 100%;
+}
+
+.admin-wrapper .navbar-default {
+	border-radius: 0;
+}
+
+.admin-wrapper .nav>li>a {
+    font-size: 14px;
+    padding: 10px;
+} 
+
+nav li a {
+	overflow: hidden;
+}
+
+aside nav,
+aside nav li,
+aside nav li a {
+	background-color: transparent;
+	border: 0;
+	font-size: 15px;
+}
+
+aside nav li {
+    cursor: pointer;
+}
+
+.admin-wrapper .wrapper-section {
+    background-color: #f3f3f3;
+}
+
+.admin-wrapper  aside {
+    padding: 10px 0;
+}
+
+.admin-wrapper .nav-panel {
+    width: 240px;
+    float: left;
+}
+
+.admin-wrapper .main-panel {
+    padding: 15px 10px;
+    float: left;
+}
+
+@media only screen and (max-width: 600px) {
+    .admin-wrapper .nav-panel {
+        width: 100%;
+    }
+
+    .admin-wrapper .main-panel {
+        width: 100%;
+    }
+}

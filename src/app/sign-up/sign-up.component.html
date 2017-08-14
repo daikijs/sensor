@@ -1,0 +1,70 @@
+<div class="container-fluid sign-form-area">
+    <div class="sign-form-wrapper">
+        <md-card>
+            <md-card-title>
+                <img md-card-image src="https://firebasestorage.googleapis.com/v0/b/omniscent-2889e.appspot.com/o/logos%2FOmniscentLogo.png?alt=media&token=676e1f64-59a1-40de-8ab9-25efcb6112d2">
+                <h2>Create your account</h2>
+            </md-card-title>
+            <md-card-content>
+                <form [formGroup]="signUpForm" (ngSubmit)="submitSignUp()" *ngIf="isGettingCustomers">
+                    <div class="form-group">
+                        <md-input-container class="full-width">
+                            <input mdInput placeholder="email" formControlName="email" name="email" required>
+                        </md-input-container>
+                        <div *ngIf="formErrors['email']" class="alert alert-danger">
+                            {{formErrors['email']}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <md-input-container  class="full-width">
+                            <input type="password" mdInput placeholder="password" formControlName="password" name="password" required>
+                        </md-input-container>
+
+                        <div *ngIf="formErrors['password']" class="alert alert-danger">
+                            {{formErrors['password']}}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <md-input-container  class="full-width">
+                            <input type="password" mdInput placeholder="confirm password" formControlName="confirmPassword" name="confirmPassword" required>
+                        </md-input-container>
+
+                        <div *ngIf="formErrors['confirmPassword']" class="alert alert-danger">
+                            {{formErrors['confirmPassword']}}
+                        </div>
+                    </div>
+
+                    <div class="form-group select-form-group">
+                        <md-select placeholder="user type" class="full-width" formControlName="type" name="type" [required]="true">
+                            <md-option *ngFor="let type of USERTYPES; let i = index;" [value]="type['value']">
+                                {{ type['display'] }}
+                            </md-option>
+                        </md-select>
+                    </div>
+
+                    <div class="form-group select-form-group" *ngIf="signUpForm['value']['type'] === USERTYPES[1]['value']">
+                        <md-select placeholder="customer name" class="full-width" formControlName="customerName" name="customerName" required>
+                            <md-option *ngFor="let customer of customers; let i = index;" [value]="i">
+                                {{ customer['name'] }}
+                            </md-option>
+                        </md-select>
+                    </div>
+
+                    <button md-raised-button class="full-width" color="primary">
+                        <strong>Sign Up</strong>
+                    </button>
+                </form>
+            </md-card-content>
+
+            <md-card-actions class="no-margin">
+                Are you ready?
+                
+                <a routerLink="/login" class="blue-text">
+                    Sign In
+                </a>
+            </md-card-actions>
+        </md-card>
+    </div>
+</div><!-- /container -->

@@ -1,0 +1,179 @@
+<div class="row no-margin" *ngIf="isLoading">
+	<div class="animated fadeIn card  with-scroll col-sm-offset-2 col-sm-8 no-padding">
+		<div class="card-header clearfix ">
+			<h3 class="card-title">Create Customer Form</h3>
+		</div>
+
+		<div class="card-body">
+			<form [formGroup]="customerForm" class="create-customer-wrapper row no-margin" (ngSubmit)="save()">
+				<div class="from-group row no-margin">
+					<div class="form-group required col-sm-6">
+						<label class="control-label" for="name">Name:</label>
+						<input type="text" class="form-control" formControlName="name" name="name" required>
+						<div *ngIf="formErrors.name" class="alert alert-danger">
+							{{formErrors.name}}
+						</div>
+					</div>
+
+					<div class="form-group required col-sm-6">
+						<label class="control-label" for="industry">Company Industry:</label>
+						<select class="form-control" formControlName="industry" name="industry" required>
+							<option *ngFor="let type of INDUSTRY_OPTIONS" [value]="type">{{type}}</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="from-group row no-margin">
+					<div class="form-group required col-sm-6">
+						<label class="control-label" for="address">Headquarter Address:</label>
+						<input type="text"  class="form-control" formControlName="address" name="address" required>
+						<div *ngIf="formErrors.address" class="alert alert-danger">
+							{{formErrors.address}}
+						</div>
+					</div>
+
+					<div class="form-group required col-sm-6">
+						<label class="control-label" for="address">Site Name:</label>
+						<input type="text"  class="form-control" formControlName="path" name="path" required>
+						<div *ngIf="formErrors.path" class="alert alert-danger">
+							{{formErrors.path}}
+						</div>
+					</div>
+				</div>
+
+				<div class="from-group row no-margin">
+					<div class="form-group col-sm-12">
+						<fieldset>
+					    	<legend>Logo Upload Option</legend>
+			        		<div class="form-check">
+			        			<label class="form-check-label">
+			            			<input class="form-check-input" type="radio" formControlName="uploadOption" name="uploadOption" [value]="true" checked>
+			            			Upload with Url
+			        			</label>
+			        		</div>
+
+			        		<div class="form-check">
+			          			<label class="form-check-label">
+			            			<input class="form-check-input" type="radio"  formControlName="uploadOption" name="uploadOption" [value]="false">
+			            			Upload with file
+			        			</label>
+			        		</div>
+					    </fieldset>
+					</div>
+				</div>
+
+				<div class="from-group row no-margin">
+					<div class="form-group col-sm-12" *ngIf="customerForm.value.uploadOption">
+						<label class="control-label" for="address">Logo Url:</label>
+						<input type="text"  class="form-control" formControlName="logo" name="logo">
+					</div>
+
+					<div class="form-group col-sm-12" *ngIf="!customerForm.value.uploadOption">
+						<label class="control-label" for="address">File </label>
+						<input type="file" class="form-control" id="logo_file_upload" name="logo">
+					</div>
+				</div>
+
+				<div class="from-group row no-margin">
+					<div class="form-group col-sm-6">
+						<label for="email">Email:</label>
+						<input type="text"  class="form-control" formControlName="email" name="email">
+					</div>
+
+					<div class="form-group col-sm-6">
+						<label for="date">Sign On Date:</label>
+						<input type="text"  class="form-control" formControlName="date" name="date">
+					</div>
+				</div>
+
+				<div class="from-group row no-margin">
+					<div class="form-group col-sm-6">
+						<fieldset>
+							<legend>Contract1:</legend>
+							<div class="form-group">
+								<label for="c1FirstName">First Name:</label>
+								<input type="text"  class="form-control" formControlName="c1FirstName" name="c1FirstName">
+							</div>
+
+							<div class="form-group">
+								<label for="c1LastName">Last Name:</label>
+								<input type="text"  class="form-control" formControlName="c1LastName" name="c1LastName">
+							</div>
+
+							<div class="form-group">
+								<label for="c1Email">Email:</label>
+								<input type="text"  class="form-control" formControlName="c1Email" name="c1Email">
+							</div>
+
+							<div class="form-group">
+								<label for="c1PhoneNumber">Phone Number:</label>
+								<input type="text"  class="form-control" formControlName="c1PhoneNumber"  name="c1PhoneNumber">
+							</div>
+						</fieldset>
+					</div>
+
+					<div class="form-group col-sm-6">
+						<fieldset>
+							<legend>Contract2:</legend>
+							<div class="form-group">
+								<label for="c2FirstName">First Name:</label>
+								<input type="text"  class="form-control" formControlName="c2FirstName" name="c2FirstName">
+							</div>
+
+							<div class="form-group">
+								<label for="c2LastName">Last Name:</label>
+								<input type="text"  class="form-control" formControlName="c2LastName" name="c2LastName">
+							</div>
+
+							<div class="form-group">
+								<label for="c2Email">Email:</label>
+								<input type="text"  class="form-control" formControlName="c2Email" name="c2Email">
+							</div>
+
+							<div class="form-group">
+								<label for="c2PhoneNumber">Phone Number:</label>
+								<input type="text"  class="form-control" formControlName="c2PhoneNumber"  name="c2PhoneNumber">
+							</div>
+						</fieldset>
+					</div>
+				</div>
+
+				<div class="from-group row no-margin">
+					<div class="form-group col-sm-6">
+						<fieldset>
+							<legend>Emergency Contact:</legend>
+							<div class="form-group">
+								<label for="eFirstName">First Name:</label>
+								<input type="text"  class="form-control" formControlName="eFirstName" name="eFirstName">
+							</div>
+
+							<div class="form-group">
+								<label for="eLastName">Last Name:</label>
+								<input type="text"  class="form-control" formControlName="eLastName" name="eLastName">
+							</div>
+
+							<div class="form-group">
+								<label for="eEmail">Email:</label>
+								<input type="text"  class="form-control" formControlName="eEmail" name="eEmail">
+							</div>
+
+							<div class="form-group">
+								<label for="ePhoneNumber">Phone Number:</label>
+								<input type="text"  class="form-control" formControlName="ePhoneNumber"  name="ePhoneNumber">
+							</div>
+						</fieldset>
+					</div>
+				</div>
+
+				<div class="form-group row no-margin">
+					<div class="form-group col-sm-12">
+						<div class="row action-wrapper">
+							<button md-raised-button class="btn btn-primary pull-left">Save</button>
+							<a md-raised-button class="btn btn-default pull-right" (click)="customerForm.reset()">Reset</a>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

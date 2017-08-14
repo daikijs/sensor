@@ -1,0 +1,35 @@
+<div class="main-app customer-area full-height" #customerMAScreen *ngIf="bIsLoading">
+	<div class="row customer-topbar-area no-margin" #zoneTopBarScreen>
+		<div class="col-xs-12 no-padding">
+			<component-zone-topbar
+			(getTabEven)="getTabEven($event)"
+			[status]="status"
+			></component-zone-topbar>
+		</div>
+	</div>
+
+	<div class="row customer-main-area no-margin" [style.height.px]="nMAHeight" *ngIf="bIsMap">
+		<div class="row customer-map-area no-margin full-height" *ngIf="status===0">
+			<div class="col-xs-12 no-padding full-height">
+				<component-zone-map
+				[zoneObjects] = "zones"
+				[centerCoordinate]="focusCoordinate"
+				(gotoSensorStatus)="gotoSensorStatus($event)"
+				></component-zone-map>
+			</div>
+		</div>
+
+		<div class="row customer-list-area no-margin full-height" *ngIf="status===1">
+			<div class="col-xs-12 no-padding full-height">
+				<component-zone-list
+				#zoneList
+				[zones] = "zones"
+				[zoneKey]="zoneKey"
+				[sensorKey]="sensorKey"
+				(loadPage)="loadPage($event)"
+				(raiseSensorEvent)="getSensorEvent($event)"
+				></component-zone-list>
+			</div>
+		</div>
+	</div>
+</div>

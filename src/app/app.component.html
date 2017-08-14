@@ -1,0 +1,15 @@
+<div class="omniscent-app">
+	<div class="header" #headerHandler>
+		<component-top-bar></component-top-bar>
+	</div>
+
+	<div class="body" [style.height.px]="nBdyHeight" *ngIf="nBdyHeight !== 0">
+		<router-outlet></router-outlet>		
+	</div>
+
+	<div class="notifications">
+		<simple-notifications [options]="options"></simple-notifications>	
+		<span defaultOverlayTarget></span>
+		<component-spinner></component-spinner>
+	</div>
+</div>

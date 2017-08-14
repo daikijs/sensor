@@ -1,0 +1,22 @@
+<div class="zone-topbar-wrap relative">
+	<div class="row title-area">
+		<div class="col-xs-12 no-padding heading-widget">
+			<h1 class="text-center">Zones</h1>
+		</div>
+	</div>
+
+	<div class="row no-margin">
+		<div class="col-sm-offset-2 col-sm-8 icon-action-area no-padding">
+			<div class="row action-area-wrap margin-auto heading-widget">
+				<button md-raised-button class="btn btn-default pull-left border-none" (click)="gotoMap()" [ngClass]="{'active': status===0}">
+					<md-icon class="fa fa-map-marker" aria-hidden="true"></md-icon>
+					<div class="btn-title">Map</div>
+				</button>
+				<button md-raised-button class="btn btn-default pull-right border-none" (click)="gotoList()" [ngClass]="{'active': status===1}">
+					<md-icon class="fa fa-list" aria-hidden="true"></md-icon>
+					<div class="btn-title">List</div>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
